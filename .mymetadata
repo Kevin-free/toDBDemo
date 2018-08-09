@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="toDBDemo"
+  id="myeclipse.1531625717711"
+  context-root="/toDBDemo"
+  j2ee-spec="5.0"
+  archive="toDBDemo.war">
+  <attributes>
+    <attribute name="webrootdir" value="WebRoot" />
+  </attributes>
+</project-module>
+
