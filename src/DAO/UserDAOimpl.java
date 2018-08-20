@@ -2,13 +2,17 @@ package DAO;
 
 import java.sql.*;
 import java.util.ArrayList;
+
+import Controller.UserAction.UploadPic;
 import POJO.User;
 
-public class UserDAOimpl implements UserDAO{
+public class UserDAOimpl extends UploadPic implements UserDAO{
+	
+	private static final long serialVersionUID = 1L;
 	private Connection conn = null;
   private PreparedStatement pst = null;
 
-  
+  UploadPic up = new UploadPic();
   /**
    * 定义构造方法，实例化的时候完成连接的注入
    */
@@ -55,19 +59,21 @@ public class UserDAOimpl implements UserDAO{
 	  public boolean insert(User user) throws SQLException {
 	    try{
 	      //插入数据改变时，insert SQL到数据库也需要相应改变
-	      String sql = "insert into user(userName,userPhone,userPassword,item,room,addTxt,myPhone,team,myEmail,dcmy) values(?,?,?,?,?,?,?,?,?,?) ";
+	      String sql = "insert into user(userName,userPhone,userPassword,imageUrl,item,room,addTxt,myPhone,team,myEmail,dcmy) values(?,?,?,?,?,?,?,?,?,?,?) ";
 	      pst = conn.prepareStatement(sql);
 	      //pst.setString(1, user.getDate());
 	      pst.setString(1, user.getUserName());
 	      pst.setString(2, user.getUserPhone());
 	      pst.setString(3, user.getUserPassword());
-	      pst.setString(4, user.getItem());
-	      pst.setString(5, user.getRoom());
-	      pst.setString(6, user.getAddTxt());
-	      pst.setString(7, user.getMyPhone());
-	      pst.setString(8, user.getTeam());
-	      pst.setString(9, user.getMyEmail());
-	      pst.setString(10, user.getDcmy());
+	      pst.setString(4, user.getImageUrl());
+System.out.println("insert user imgUrl:"+user.getImageUrl());	      
+	      pst.setString(5, user.getItem());
+	      pst.setString(6, user.getRoom());
+	      pst.setString(7, user.getAddTxt());
+	      pst.setString(8, user.getMyPhone());
+	      pst.setString(9, user.getTeam());
+	      pst.setString(10, user.getMyEmail());
+	      pst.setString(11, user.getDcmy());
 	      pst.executeUpdate();
 	      return true;
 	    }catch(Exception e){

@@ -1,101 +1,110 @@
 package POJO;
 
 public class User extends Basis {
-  String userName;
-  String userPhone;
-  String userPassword;
-  String item;
-  String room;
-  String addTxt;
-  String myPhone;
-  String team;
-  String myEmail;
-  String dcmy;
+	String userName;
+	String userPhone;
+	String userPassword;
+	String imageUrl;
+	String item;
+	String room;
+	String addTxt;
+	String myPhone;
+	String team;
+	String myEmail;
+	String dcmy;
 
-  public String getUserName() {
-    return userName;
-  }
+	public String getUserName() {
+		return userName;
+	}
 
-  public void setUserName(String userName) {
-    this.userName = userName;
-  }
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 
-  public String getUserPhone() {
-    return userPhone;
-  }
+	public String getUserPhone() {
+		return userPhone;
+	}
 
-  public void setUserPhone(String userPhone) {
-    this.userPhone = userPhone;
-  }
+	public void setUserPhone(String userPhone) {
+		this.userPhone = userPhone;
+	}
 
-  public String getUserPassword() {
-    return userPassword;
-  }
+	public String getUserPassword() {
+		return userPassword;
+	}
 
-  public void setUserPassword(String userPassword) {
-    this.userPassword = userPassword;
-  }
+	public void setUserPassword(String userPassword) {
+		this.userPassword = userPassword;
+	}
 
-  public String getItem() {
-    return item;
-  }
+	public String getImageUrl() {
+		return imageUrl;
+	}
 
-  public void setItem(String item) {
-    this.item = item;
-  }
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
+	}
 
-  public String getMyPhone() {
-    return myPhone;
-  }
+	public String getItem() {
+		return item;
+	}
 
-  public void setMyPhone(String myPhone) {
-    this.myPhone = myPhone;
-  }
+	public void setItem(String item) {
+		this.item = item;
+	}
 
-  public String getMyEmail() {
-    return myEmail;
-  }
+	public String getMyPhone() {
+		return myPhone;
+	}
 
-  public void setMyEmail(String myEmail) {
-    this.myEmail = myEmail;
-  }
+	public void setMyPhone(String myPhone) {
+		this.myPhone = myPhone;
+	}
 
-  public String getDcmy() {
-    return dcmy;
-  }
+	public String getMyEmail() {
+		return myEmail;
+	}
 
-  public void setDcmy(String dcmy) {
-    this.dcmy = dcmy;
-  }
+	public void setMyEmail(String myEmail) {
+		this.myEmail = myEmail;
+	}
 
-  public String getRoom() {
-    return room;
-  }
+	public String getDcmy() {
+		return dcmy;
+	}
 
-  public void setRoom(String room) {
-    this.room = room;
-  }
+	public void setDcmy(String dcmy) {
+		this.dcmy = dcmy;
+	}
 
-  public String getAddTxt() {
-    return addTxt;
-  }
+	public String getRoom() {
+		return room;
+	}
 
-  public void setAddTxt(String addTxt) {
-    this.addTxt = addTxt;
-  }
+	public void setRoom(String room) {
+		this.room = room;
+	}
 
-  public String getTeam() {
-    return team;
-  }
+	public String getAddTxt() {
+		return addTxt;
+	}
 
-  public void setTeam(String team) {
-    this.team = team;
-  }
+	public void setAddTxt(String addTxt) {
+		this.addTxt = addTxt;
+	}
 
-  public String toString() {
-    return "User [userName=" + userName + ", userPhone=" + userPhone + ", userPassword=" + userPassword + ", item="
-        + item + ", room=" + room + ", addTxt=" + addTxt + ", myPhone=" + myPhone + ", team=" + team + ", myEmail="
-        + myEmail + ", dcmy=" + dcmy + "]";
-  }
+	public String getTeam() {
+		return team;
+	}
+
+	public void setTeam(String team) {
+		this.team = team;
+	}
+
+	public String toString() {
+		return "User [userName=" + userName + ", userPhone=" + userPhone + ", userPassword=" + userPassword + ", item="
+				+ item + ", room=" + room + ", addTxt=" + addTxt + ", myPhone=" + myPhone + ", team=" + team
+				+ ", myEmail=" + myEmail + ", dcmy=" + dcmy + "]";
+	}
 
 }

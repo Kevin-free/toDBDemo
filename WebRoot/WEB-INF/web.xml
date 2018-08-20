@@ -13,8 +13,8 @@
     <servlet-class>Controller.UserAction.Insert</servlet-class>
   </servlet>
   <servlet>
-    <servlet-name>ClinetAction</servlet-name>
-    <servlet-class>ToExcel.toExcelUser</servlet-class>
+    <servlet-name>UploadPic</servlet-name>
+    <servlet-class>Controller.UserAction.UploadPic</servlet-class>
   </servlet>
   
   <servlet-mapping>
@@ -22,7 +22,7 @@
     <url-pattern>/UserAction/Insert</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-    <servlet-name>ClinetAction</servlet-name>
-    <url-pattern>/ClinetAction</url-pattern>
+    <servlet-name>UploadPic</servlet-name>
+    <url-pattern>/UserAction/UploadPic</url-pattern>
   </servlet-mapping>
 </web-app>
