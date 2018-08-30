@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Font;
-import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.log4j.Logger;
@@ -16,9 +15,11 @@ import org.apache.poi.hssf.usermodel.HSSFFont;
 
 public class toExcelUser {
 	private static Logger logger = Logger.getLogger(toExcelUser.class);
+	public String path = "/home/yidongdata/userXls/";// 设置Linux系统文件夹路径
+//	public String path = "E:/yidongdata/userXls/";// 设置文件夹路径
+	public String destPath = null;// 设置图片根路径
 
-	public boolean toxls(ResultSet rs) throws Exception {
-
+	public boolean toxls(ResultSet rs,String touserXls) throws Exception {
 		HSSFWorkbook wb = new HSSFWorkbook();// 新建工作薄对象
 		HSSFSheet sheet = wb.createSheet("交单表");// 在工作薄中创建工作表
 		HSSFRow row = null;
@@ -27,7 +28,7 @@ public class toExcelUser {
 
 		// HSSFRow row = sheet.createRow(0);//在sheet中添加表头第0行
 
-		// ----------------标题样式---------------------
+		/*// ----------------标题样式---------------------
 		HSSFCellStyle titleStyle = wb.createCellStyle(); // 标题样式
 		titleStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
 		Font ztFont = wb.createFont();
@@ -36,7 +37,7 @@ public class toExcelUser {
 		ztFont.setFontHeightInPoints((short) 12); // 将字体大小设置为18px
 		ztFont.setFontName("宋体"); // 将“宋体”字体应用到当前单元格上
 		ztFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD); // 加粗
-		titleStyle.setFont(ztFont);
+		titleStyle.setFont(ztFont);*/
 
 		// ----------------二级标题格样式-------------------------
 		HSSFCellStyle titleStyle2 = wb.createCellStyle();
@@ -56,20 +57,20 @@ public class toExcelUser {
 		cellFont.setFontName("宋体");
 		cellStyle.setFont(cellFont);
 
-		// ----------------------创建第一行---------------
+		/*// ----------------------创建第一行---------------
 		row = sheet.createRow(0);
 		row.setHeightInPoints(72);
 		cell = row.createCell(0);
-		sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 12));
-		cell.setCellValue("业务项目中：0代表存送话费或预约办卡，1代表10元20G流量\n" + 
+		sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 11));
+		cell.setCellValue("业务项目中：0代表预约办卡，1代表40G校内流量\n" + 
 								"2代表低消38宽带，3代表低消48宽带\n" +
 								"4代表低消38WiFi，5代表3元WiFi，6代表6元WiFi\n" + 
 								"7代表变更为28套餐，8代表变更为48套餐\n" + 
-								"9代表两城一号，10代表其他");
-		cell.setCellStyle(titleStyle);
+								"9代表两城一号，10代表校园V网，11代表校园会员，12代表存送话费，13代表其他");
+		cell.setCellStyle(titleStyle);*/
 
 		// 定义各列
-		row = sheet.createRow(1); // 创建第二行
+		row = sheet.createRow(0); // 创建第一行
 		cell = row.createCell(0);
 		cell.setCellValue("提交ID");
 		cell.setCellStyle(titleStyle2);
@@ -101,16 +102,18 @@ public class toExcelUser {
 		cell.setCellValue("橙人电话");
 		cell.setCellStyle(titleStyle2);
 		cell = row.createCell(10);
-		cell.setCellValue("办理队伍");
+		cell.setCellValue("橙人姓名");
 		cell.setCellStyle(titleStyle2);
 		cell = row.createCell(11);
-		cell.setCellValue("橙人邮箱");
+		cell.setCellValue("办理队伍");
 		cell.setCellStyle(titleStyle2);
 		cell = row.createCell(12);
 		cell.setCellValue("满意度");
 		cell.setCellStyle(titleStyle2);
 		// 写入实体数据,实际应用中这些数据从数据库或记录结果集中得到
-		int i = 2;
+		
+		//从数据库读入数据写入Excel表
+		int i = 1;
 		while (rs.next()) {
 			row = sheet.createRow(i);
 			for (int j = 1; j <= 13; j++) {
@@ -121,16 +124,20 @@ public class toExcelUser {
 			}
 			i++;
 		}
+		
 		// 将文件存到指定位置
+		String fileName = touserXls;
+		File dir = new File(path);
+		if (!dir.exists()) {
+			dir.mkdir();
+		}
+		destPath = path + fileName + ".xls";
 		FileOutputStream fout = null;
 		File file;
 		try {
-			file = new File("/home/yidongdata/user.xls");
-//			file = new File("E:/user.xls");
+			file = new File(destPath);
 			fout = new FileOutputStream(file);
 			wb.write(fout);
-			// fout.write("xiongwentao会如何如何".getBytes());
-			// fout.flush();
 			System.out.println("导出Excel成功！");
 			return true;
 		} catch (Exception e) {

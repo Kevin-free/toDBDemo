@@ -8,21 +8,5 @@
   <welcome-file-list>
     <welcome-file>user/user.jsp</welcome-file>
   </welcome-file-list>
-  <servlet>
-    <servlet-name>UserActionInsert</servlet-name>
-    <servlet-class>Controller.UserAction.Insert</servlet-class>
-  </servlet>
-  <servlet>
-    <servlet-name>UploadPic</servlet-name>
-    <servlet-class>Controller.UserAction.UploadPic</servlet-class>
-  </servlet>
   
-  <servlet-mapping>
-    <servlet-name>UserActionInsert</servlet-name>
-    <url-pattern>/UserAction/Insert</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>UploadPic</servlet-name>
-    <url-pattern>/UserAction/UploadPic</url-pattern>
-  </servlet-mapping>
 </web-app>

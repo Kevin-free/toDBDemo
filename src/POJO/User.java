@@ -9,8 +9,10 @@ public class User extends Basis {
 	String room;
 	String addTxt;
 	String myPhone;
+	String myName;
+
 	String team;
-	String myEmail;
+	//String myEmail;
 	String dcmy;
 
 	public String getUserName() {
@@ -61,13 +63,21 @@ public class User extends Basis {
 		this.myPhone = myPhone;
 	}
 
-	public String getMyEmail() {
-		return myEmail;
+	public String getMyName() {
+		return myName;
 	}
 
-	public void setMyEmail(String myEmail) {
-		this.myEmail = myEmail;
+	public void setMyName(String myName) {
+		this.myName = myName;
 	}
+
+//	public String getMyEmail() {
+//		return myEmail;
+//	}
+//
+//	public void setMyEmail(String myEmail) {
+//		this.myEmail = myEmail;
+//	}
 
 	public String getDcmy() {
 		return dcmy;
@@ -102,9 +112,9 @@ public class User extends Basis {
 	}
 
 	public String toString() {
-		return "User [userName=" + userName + ", userPhone=" + userPhone + ", userPassword=" + userPassword + ", item="
-				+ item + ", room=" + room + ", addTxt=" + addTxt + ", myPhone=" + myPhone + ", team=" + team
-				+ ", myEmail=" + myEmail + ", dcmy=" + dcmy + "]";
+		return "User[userName=" + userName + ",userPhone=" + userPhone + ",userPassword=" + userPassword + ",item="
+				+ item + ",room=" + room + ",addTxt=" + addTxt + ",myPhone=" + myPhone + ",myName=" + myName + ",team=" + team
+				+  ",dcmy=" + dcmy + "]";
 	}
 
 }

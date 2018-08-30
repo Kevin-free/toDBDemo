@@ -31,10 +31,12 @@ public class UserServiceDAOimpl implements UserServiceDAO{
 	  public boolean insert(User user){
 	    Connection conn = DBUtil.getConnection();
 	    UserDAOimpl userD = new UserDAOimpl(conn);
+	    //TODO 
 	    try{
-	      userD.insert(user);
+	      Boolean isInsert = userD.insert(user);
 	      conn.commit();
-	      return true;
+	      
+	      return isInsert;
 	    }catch(Exception e){
 	      try {conn.rollback();} 
 	      catch (SQLException ex) {ex.printStackTrace();}

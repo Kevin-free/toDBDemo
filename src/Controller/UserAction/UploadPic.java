@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.util.List;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,12 +25,15 @@ import org.apache.log4j.Logger;
  * @author Kevin
  *
  */
+@WebServlet(name="UploadPic", urlPatterns="/UserAction/UploadPic"
+)
+
 public class UploadPic extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 	private static final Logger logger = Logger.getLogger(UploadPic.class);
-	public String path = "/home/yidongdata/userPic/";// 设置文件夹路径
-//	public String path = "E:/userPic/";// 设置文件夹路径
+	public String path = "/home/yidongdata/userPic/";// 设置Linux系统文件夹路径
+//	public String path = "E:/yidongdata/userPic/";// 设置Windows系统文件夹路径
 	public String destPath = null;// 设置图片根路径
 
 	String name = null;// 图片名
@@ -39,8 +43,7 @@ public class UploadPic extends HttpServlet {
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// 获取文件需要上传到的路径
-		// String path = request.getRealPath("/userPic")+"/";
+		//若不存在则新建一个文件夹
 		File dir = new File(path);
 		if (!dir.exists()) {
 			dir.mkdir();
