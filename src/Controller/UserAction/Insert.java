@@ -51,18 +51,16 @@ public class Insert extends HttpServlet {
 
 	// ToDo ??获取时间后但不会更新 解决：date需要放方法里局部变量！才会重新获取
 	String dbuser = null;// 设置变量用于根据不同队伍插入不同数据表
-	String dbcr = null;
-	String touserXls = null;
+	String dbcr = null;//查哪个队的橙人
+	String touserXls = null; //存储的Excel名
 	String teamXls = null;// 设置变量获取本地Excel文件
-	String KevinEmail = "1215894562@qq.com";// 设置接收者Email
+	String teamText = null; //设置写入的队伍文本
+	String teamEmail = null; // 设置变量发送给哪个队伍
+	String teamAdmin = null; //设置管理员队伍变量
+	String KevinEmail = "1215894562@qq.com";// 设置始终接收者接收所有队Email
 	String oyqEmail = "1404055432@qq.com";
 	String yjEmail = "787766819@qq.com";
 	String ctEmail = "S_love_en@163.com";
-	String teamText = null;
-	String teamEmail = null; // 设置变量发送给哪个队伍
-	String teamA4 = "ouyangqin1999@126.com";
-	String teamA7 = "1392789264@qq.com";
-	String teamB9 = "1967422157@qq.com";
 
 	// 定义业务item文字
 	String item0 = "——预约办卡——";
@@ -85,8 +83,10 @@ public class Insert extends HttpServlet {
 
 	//增，删，改 数据建议用Post(安全性高，效率低)
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//设置编码格式，防止中文乱码
 		request.setCharacterEncoding("utf-8");
 		response.setContentType("text/html;charset=utf-8");
+		//连接数据库
 		conn = DBUtil.getConnection();
 		// 1、接收参数
 		String userName = request.getParameter("userName");
@@ -94,11 +94,11 @@ public class Insert extends HttpServlet {
 		String userPassword = request.getParameter("userPassword");
 		String imgPhone = request.getParameter("imgPhone");
 		String item = request.getParameter("item");
+		System.out.println("item:"+item);
 		String room = request.getParameter("room");
 		String addTxt = request.getParameter("addTxt");
 		String myPhone = request.getParameter("myPhone");
 		String team = request.getParameter("team");
-		// String myEmail = request.getParameter("myEmail");
 		String dcmy = request.getParameter("dcmy");
 		String pageNo = request.getParameter("pageNo");
 		// 2、封装到对象user中
@@ -108,7 +108,7 @@ public class Insert extends HttpServlet {
 		if (imgPhone == null || imgPhone.equals("null")) {
 			user.setImageUrl("");
 		} else {
-			user.setImageUrl(up.path + imgPhone + ".jpg");
+			user.setImageUrl(imgPhone);
 		}
 
 		// user.setItem(item);
@@ -119,38 +119,57 @@ public class Insert extends HttpServlet {
 		// 将获取的队伍下标转为中文队伍表示
 		switch (team) {
 		case "0":
-			teamText = "九院本部A4队";
+			teamText = "九院本部A4队";//设置存入的文本
 			user.setTeam(teamText);
-			teamEmail = teamA4;// 发送给哪个队
 			dbuser = "usera4";// 从哪数据表获取数据
-			dbcr = "a4cr";
-			touserXls = "userA4";
-			teamXls = "userA4";// 用哪个表发送邮件
+			dbcr = "a4cr";//验证哪个队的橙人
+			touserXls = "userA4";//以什么名命名Excel
+			teamXls = "userA4";// 用哪个Excel发送邮件
+			teamAdmin = "a4";//以admin字段中取发送邮件给哪个队
 			break;
 		case "1":
 			teamText = "九院本部A7队";
 			user.setTeam(teamText);
-			teamEmail = teamA7;
 			dbuser = "usera7";
 			dbcr = "a7cr";
 			touserXls = "userA7";
 			teamXls = "userA7";
+			teamAdmin = "a7";
 			break;
 		case "2":
 			teamText = "九院本部B9队";
 			user.setTeam(teamText);
-			teamEmail = teamB9;
 			dbuser = "userb9";
 			dbcr = "b9cr";
 			touserXls = "userB9";
 			teamXls = "userB9";
+			teamAdmin = "b9";
 			break;
 		default:
 			break;
 		}
 		
+		//根据队伍获取管理员邮箱
+		String sqladmin = "select * from admin where team = '"+teamAdmin+"' ";//若是字符型需要加单引号
+		try {
+			pst = conn.prepareStatement(sqladmin);
+			ResultSet rs = pst.executeQuery();
+			if (rs.next()) { 
+				for (int i = 0; i <= rs.getRow(); i++) {
+					if(rs.getString("email") != null) {						
+						teamEmail = rs.getString("email");
+					}
+					rs.next();
+				}
+			}
+		} catch (SQLException e3) {
+			e3.printStackTrace();
+		}
+		
 		user.setMyPhone(myPhone);
-		String sql = "select * from "+ dbcr +" where phone = "+ myPhone;
+		//根据用户电话获取用户姓名
+		String sql = "select * from "+ dbcr +" where phone = "+ myPhone;//整型数不需要加不会有问题
+		System.out.println(sql);
 		try {
 			pst = conn.prepareStatement(sql);
 			ResultSet rs = pst.executeQuery();
@@ -164,7 +183,6 @@ public class Insert extends HttpServlet {
 			e2.printStackTrace();
 		}
 		
-		// user.setMyEmail(myEmail);
 		user.setDcmy(dcmy);
 		user.setPageNo(pageNo);
 		System.out.println("received item:" + item);
@@ -196,84 +214,72 @@ public class Insert extends HttpServlet {
 			user2.setItem(item1);
 			user2.setTeam(teamText);
 			userSD.insert(user2);
-			System.out.println("01");
 		}
 		if (item.contains("02")) {
 			User user3 = new User();
 			user3.setItem(item2);
 			user3.setTeam(teamText);
 			userSD.insert(user3);
-			System.out.println("02");
 		}
 		if (item.contains("03")) {
 			User user4 = new User();
 			user4.setItem(item3);
 			user4.setTeam(teamText);
 			userSD.insert(user4);
-			System.out.println("03");
 		}
 		if (item.contains("04")) {
 			User user5 = new User();
 			user5.setItem(item4);
 			user5.setTeam(teamText);
 			userSD.insert(user5);
-			System.out.println("04");
 		}
 		if (item.contains("05")) {
 			User user6 = new User();
 			user6.setItem(item5);
 			user6.setTeam(teamText);
 			userSD.insert(user6);
-			System.out.println("05");
 		}
 		if (item.contains("06")) {
 			User user7 = new User();
 			user7.setItem(item6);
 			user7.setTeam(teamText);
 			userSD.insert(user7);
-			System.out.println("06");
 		}
 		if (item.contains("07")) {
 			User user8 = new User();
 			user8.setItem(item7);
 			user8.setTeam(teamText);
 			userSD.insert(user8);
-			System.out.println("07");
 		}
 		if (item.contains("08")) {
 			User user9 = new User();
 			user9.setItem(item8);
 			user9.setTeam(teamText);
 			userSD.insert(user9);
-			System.out.println("08");
 		}
 		if (item.contains("09")) {
 			User user10 = new User();
 			user10.setItem(item9);
 			user10.setTeam(teamText);
 			userSD.insert(user10);
-			System.out.println("09");
 		}
 		if (item.contains("10")) {
 			User user11 = new User();
 			user11.setItem(item10);
 			user11.setTeam(teamText);
 			userSD.insert(user11);
-			System.out.println("10");
 		}
 		if (item.contains("11")) {
 			User user12 = new User();
 			user12.setItem(item11);
 			user12.setTeam(teamText);
 			userSD.insert(user12);
-			System.out.println("11");
 		}
 		if (item.contains("12")) {
 			User user13 = new User();
 			user13.setItem(item12);
 			user13.setTeam(teamText);
 			userSD.insert(user13);
-			System.out.println("12");
 		}
 		//插入一条空数据隔开显示
 		User userlast = new User();
@@ -307,21 +313,15 @@ public class Insert extends HttpServlet {
 			try {
 				System.out.println("判断时n:" + n);
 				if (n % 5 == 0) {
-					te.sendMail3(KevinEmail, teamXls);
-					System.out.println("发送邮件给Kevin成功");
-//					te.sendMail3(oyqEmail, teamXls);
-//					System.out.println("发送邮件给oyq成功");
-//					te.sendMail3(yjEmail, teamXls);
-//					System.out.println("发送邮件给yj成功");
-//					te.sendMail3(ctEmail, teamXls);
-//					System.out.println("发送邮件给ct成功");
-//					te.sendMail3(teamEmail, teamXls);
-//					System.out.println("发送邮件给队伍" + team + "成功" + teamEmail);
+//					te.sendMail3(KevinEmail, teamXls);
+//					System.out.println("发送邮件给Kevin成功");
+					te.sendMail3(oyqEmail, teamXls);
+					System.out.println("发送邮件给oyq成功");
+					te.sendMail3(ctEmail, teamXls);
+					System.out.println("发送邮件给ct成功");
+					te.sendMail3(teamEmail, teamXls);
+					System.out.println("发送邮件给队伍" + team + "成功" + teamEmail);
 
-					/*
-					 * if (myEmail != "") { te.sendMail3(myEmail); System.out.println("发送邮件给收件人成功");
-					 * }
-					 */
 					n = n + 1;
 					System.out.println("发送了邮件终值n:" + n);
 				} else {
@@ -338,7 +338,6 @@ public class Insert extends HttpServlet {
 		        job.getJobDataMap().put("teamXls", teamXls);
 		        job.getJobDataMap().put("KevinEmail", KevinEmail);
 		        job.getJobDataMap().put("oyqEmail", oyqEmail);
-		        job.getJobDataMap().put("yjEmail", yjEmail);
 		        job.getJobDataMap().put("ctEmail", ctEmail);
 		        job.getJobDataMap().put("teamEmail", teamEmail);
 		        

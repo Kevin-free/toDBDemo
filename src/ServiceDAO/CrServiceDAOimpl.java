@@ -106,8 +106,19 @@ public class CrServiceDAOimpl implements CrServiceDAO {
 
 	@Override
 	public boolean update(Cr cr) {
-		// TODO Auto-generated method stub
-		return false;
+		Connection conn = DBUtil.getConnection();
+		CrDAOimpl crD = new CrDAOimpl(conn,cr);
+	    try{
+	      Boolean isUpd = crD.update(cr);
+	      conn.commit();
+	      return isUpd;
+	    }catch(Exception e){
+	      try {conn.rollback();} 
+	      catch (SQLException ex) {ex.printStackTrace();}
+	      return false;
+	    }finally{
+	      if(conn != null){DBUtil.closeConnection(conn);}
+	    }
 	}
 
 }

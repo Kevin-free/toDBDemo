@@ -79,15 +79,15 @@ public class TestEmail implements Job {
 
 		// 创建附件节点 读取本地文件,并读取附件名称
 		destPath = path + team + ".xls";
-		MimeBodyPart file2 = new MimeBodyPart();
-		DataHandler dataHandler3 = new DataHandler(new FileDataSource(destPath));
-		file2.setDataHandler(dataHandler3);
-		file2.setFileName(MimeUtility.encodeText(dataHandler3.getName()));
+		MimeBodyPart file1 = new MimeBodyPart();
+		DataHandler dataHandler1 = new DataHandler(new FileDataSource(destPath));
+		file1.setDataHandler(dataHandler1);
+		file1.setFileName(MimeUtility.encodeText(dataHandler1.getName()));
 
 		// 将文本和图片添加到multipart
 		multipart.addBodyPart(text);
 		/* multipart.addBodyPart(image); */
-		multipart.addBodyPart(file2);
+		multipart.addBodyPart(file1);
 		multipart.setSubType("mixed");// 混合关系
 
 		message.setContent(multipart);
@@ -122,12 +122,11 @@ public class TestEmail implements Job {
 		String teamXls = dataMap.getString("teamXls");
 		String KevinEmail = dataMap.getString("KevinEmail");
 		String oyqEmail = dataMap.getString("oyqEmail");
-		String yjEmail = dataMap.getString("yjEmail");
 		String ctEmail = dataMap.getString("ctEmail");
 		String teamEmail = dataMap.getString("teamEmail");
 		System.out.println("recived team:" + teamXls);
 		System.out.println(
-				"recived Email:" + KevinEmail + "," + oyqEmail + "," + yjEmail + "," + ctEmail + "," + teamEmail);
+				"recived Email:" + KevinEmail + "," + oyqEmail + "," + ctEmail + "," + teamEmail);
 
 		Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
@@ -142,47 +141,100 @@ public class TestEmail implements Job {
 		{
 			try {
 				// 设置发件人，收件人，主题和文本内容，并发送
-				message.setFrom(new InternetAddress(senderEmail, senderName, "UTF-8"));
-				message.setRecipient(MimeMessage.RecipientType.TO, new InternetAddress(KevinEmail, "summary", "UTF-8"));// setRecipient写最前
-				System.out.println("add1");
-				message.addRecipient(MimeMessage.RecipientType.TO, new InternetAddress(oyqEmail, "summary", "UTF-8"));
-				System.out.println("add2");
-				message.addRecipient(MimeMessage.RecipientType.TO, new InternetAddress(yjEmail, "summary", "UTF-8"));
-				System.out.println("add3");
-				message.addRecipient(MimeMessage.RecipientType.TO, new InternetAddress(ctEmail, "summary", "UTF-8"));
-				System.out.println("add4");
-				if(teamEmail != null) {
-					message.addRecipient(MimeMessage.RecipientType.TO, new InternetAddress(teamEmail, "summary", "UTF-8"));
-					System.out.println("add5");
-				}
-				message.setSubject("今日橙人交单汇总表", "UTF-8");
-				System.out.println("Preparing sending mail...");
-				// 一个Multipart对象包含一个或多个bodypart对象，组成邮件正文
-				MimeMultipart multipart = new MimeMultipart();
+//				message.setFrom(new InternetAddress(senderEmail, senderName, "UTF-8"));
+//				message.setSubject("今日橙人交单汇总表", "UTF-8");
+//				message.setRecipient(MimeMessage.RecipientType.TO, new InternetAddress(KevinEmail, "summary", "UTF-8"));// setRecipient写最前
+//				System.out.println("Preparing sending mail  1...");
+//				// 一个Multipart对象包含一个或多个bodypart对象，组成邮件正文
+//				MimeMultipart multipart = new MimeMultipart();
+//				// 创建文本节点
+//				MimeBodyPart text = new MimeBodyPart();
+//				text.setContent("今日汇总表！", "text/html;charset=UTF-8");
+//				// 创建附件节点 读取本地文件,并读取附件名称
+//				String FilePath1 = path + "userA7" + ".xls";
+//				MimeBodyPart file1 = new MimeBodyPart();
+//				DataHandler dataHandler1 = new DataHandler(new FileDataSource(FilePath1));
+//				file1.setDataHandler(dataHandler1);
+//				file1.setFileName(MimeUtility.encodeText(dataHandler1.getName()));
+//				// 将文本和文件添加到multipart
+//				multipart.addBodyPart(text);
+//				multipart.addBodyPart(file1);
+//				multipart.setSubType("mixed");// 混合关系
+//				message.setContent(multipart);
+//				message.setSentDate(new Date());
+//				message.saveChanges();
+//				Transport transport = session.getTransport("smtp");
+//				transport.connect(fwq, senderEmail, sqm);
+//				transport.sendMessage(message, message.getAllRecipients());
+				
+				message.setRecipient(MimeMessage.RecipientType.TO, new InternetAddress(oyqEmail, "summary", "UTF-8"));
+				System.out.println("Preparing sending mail  2...");
+//				// 一个Multipart对象包含一个或多个bodypart对象，组成邮件正文
+				MimeMultipart multipart2 = new MimeMultipart();
 				// 创建文本节点
 				MimeBodyPart text = new MimeBodyPart();
 				text.setContent("今日汇总表！", "text/html;charset=UTF-8");
-
 				// 创建附件节点 读取本地文件,并读取附件名称
-				destPath = path + teamXls + ".xls";
+				String FilePath2 = path + "userA4" + ".xls";
 				MimeBodyPart file2 = new MimeBodyPart();
-				DataHandler dataHandler3 = new DataHandler(new FileDataSource(destPath));
-				file2.setDataHandler(dataHandler3);
-				file2.setFileName(MimeUtility.encodeText(dataHandler3.getName()));
-
-				// 将文本和图片添加到multipart
-				multipart.addBodyPart(text);
-				/* multipart.addBodyPart(image); */
-				multipart.addBodyPart(file2);
-				multipart.setSubType("mixed");// 混合关系
-
-				message.setContent(multipart);
-
+				DataHandler dataHandler2 = new DataHandler(new FileDataSource(FilePath2));
+				file2.setDataHandler(dataHandler2);
+				file2.setFileName(MimeUtility.encodeText(dataHandler2.getName()));
+				// 将文本和文件添加到multipart
+				multipart2.addBodyPart(text);
+				multipart2.addBodyPart(file2);
+				multipart2.setSubType("mixed");// 混合关系
+				message.setContent(multipart2);
 				message.setSentDate(new Date());
 				message.saveChanges();
 				Transport transport = session.getTransport("smtp");
 				transport.connect(fwq, senderEmail, sqm);
 				transport.sendMessage(message, message.getAllRecipients());
+				
+				message.setRecipient(MimeMessage.RecipientType.TO, new InternetAddress(ctEmail, "summary", "UTF-8"));
+				System.out.println("Preparing sending mail  3...");
+				// 一个Multipart对象包含一个或多个bodypart对象，组成邮件正文
+				MimeMultipart multipart3 = new MimeMultipart();
+				// 创建附件节点 读取本地文件,并读取附件名称
+				String FilePath3 = path + "userA7" + ".xls";
+				MimeBodyPart file3 = new MimeBodyPart();
+				DataHandler dataHandler3 = new DataHandler(new FileDataSource(FilePath3));
+				file3.setDataHandler(dataHandler3);
+				file3.setFileName(MimeUtility.encodeText(dataHandler3.getName()));
+				// 将文本和文件添加到multipart
+				multipart3.addBodyPart(text);
+				multipart3.addBodyPart(file3);
+				multipart3.setSubType("mixed");// 混合关系
+				message.setContent(multipart3);
+				message.setSentDate(new Date());
+				message.saveChanges();
+				transport = session.getTransport("smtp");
+				transport.connect(fwq, senderEmail, sqm);
+				transport.sendMessage(message, message.getAllRecipients());
+				
+				if(teamEmail != null) {
+					message.setRecipient(MimeMessage.RecipientType.TO, new InternetAddress(teamEmail, "summary", "UTF-8"));
+					System.out.println("Preparing sending mail  3...");
+					// 一个Multipart对象包含一个或多个bodypart对象，组成邮件正文
+					MimeMultipart multipart4 = new MimeMultipart();
+					// 创建附件节点 读取本地文件,并读取附件名称
+					String FilePath4 = path + teamXls + ".xls";
+					MimeBodyPart file4 = new MimeBodyPart();
+					DataHandler dataHandler4 = new DataHandler(new FileDataSource(FilePath4));
+					file4.setDataHandler(dataHandler4);
+					file4.setFileName(MimeUtility.encodeText(dataHandler4.getName()));
+					// 将文本和文件添加到multipart
+					multipart4.addBodyPart(text);
+					multipart4.addBodyPart(file4);
+					multipart4.setSubType("mixed");// 混合关系
+					message.setContent(multipart4);
+					message.setSentDate(new Date());
+					message.saveChanges();
+					transport = session.getTransport("smtp");
+					transport.connect(fwq, senderEmail, sqm);
+					transport.sendMessage(message, message.getAllRecipients());
+				}
+				
 				transport.close();
 				flag = 1;
 				System.out.println("message sent successfully");

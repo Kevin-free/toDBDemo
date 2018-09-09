@@ -24,7 +24,6 @@ import ServiceDAO.CrServiceDAOimpl;
 public class DelCr extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	CrServiceDAOimpl crSD = new CrServiceDAOimpl();
-	Cr cr = new Cr();
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -39,8 +38,6 @@ public class DelCr extends HttpServlet {
 		String crPhone = req.getParameter("crPhone");
 		String crTeam = req.getParameter("crTeam");
 		Cr cr = new Cr(crPhone,crTeam);
-	    //2、封装大对象cr中
-	    cr.setPhone(crPhone);
 	    //3、调用ServiceDAO中的删除业务
 	    Boolean isDel = false;
 		//is add

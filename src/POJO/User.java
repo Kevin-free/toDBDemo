@@ -10,9 +10,7 @@ public class User extends Basis {
 	String addTxt;
 	String myPhone;
 	String myName;
-
 	String team;
-	//String myEmail;
 	String dcmy;
 
 	public String getUserName() {
@@ -70,14 +68,6 @@ public class User extends Basis {
 	public void setMyName(String myName) {
 		this.myName = myName;
 	}
-
-//	public String getMyEmail() {
-//		return myEmail;
-//	}
-//
-//	public void setMyEmail(String myEmail) {
-//		this.myEmail = myEmail;
-//	}
 
 	public String getDcmy() {
 		return dcmy;

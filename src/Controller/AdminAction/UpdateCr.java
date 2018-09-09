@@ -1,7 +1,6 @@
 package Controller.AdminAction;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,12 +16,12 @@ import POJO.Cr;
 import ServiceDAO.CrServiceDAOimpl;
 
 /**
- * 管理员查询是否有该橙人
+ * 管理员修改橙人
  * @author Kevin
  *
  */
-@WebServlet(name = "AdminActionSelInfo", urlPatterns = "/AdminAction/SelInfoCr")
-public class SelectInfoCr extends HttpServlet{
+@WebServlet(name = "AdminActionUpd", urlPatterns = "/AdminAction/UpdCr")
+public class UpdateCr extends HttpServlet{
 	private static final long serialVersionUID = 1L;
 	CrServiceDAOimpl crSD = new CrServiceDAOimpl();
 	
@@ -35,27 +34,23 @@ public class SelectInfoCr extends HttpServlet{
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		req.setCharacterEncoding("utf-8");
 	    resp.setContentType("text/html;charset=utf-8");
-	    String crName = req.getParameter("crName");
-		String crPhone = req.getParameter("crPhone");
-		System.out.println("crname:"+crName+"  ,crphone:"+crPhone);
+	    //接收参数
+	    String crPhone = req.getParameter("crPhone");
 		String crTeam = req.getParameter("crTeam");
-		Cr cr = new Cr(crPhone, crName,crTeam);
-		ArrayList<Cr> crList = crSD.selectInfo(cr);
+		String butName = req.getParameter("butName");
+		String butPhone = req.getParameter("butPhone");
+		Cr cr = new Cr(crPhone, crTeam, butName, butPhone);
+		Boolean isUpd = false;
+		isUpd = crSD.update(cr);
+		
 		Map<String,String> map=new HashMap<String,String>();
-		if(crList.isEmpty())
-		{
-			map.put("conInfoCr", "notCon");
-			return;
-		}else {
-			map.put("conInfoCr", "isCon");
-			map.put("crName", crList.get(0).getName());
-			map.put("crPhone", crList.get(0).getPhone());
-		}
+		if(isUpd) map.put("isUpd", "ok");
+		else map.put("isUpd", "err");
+		
 		Gson gson = new Gson();
 		String json = gson.toJson(map);
 		System.out.println(json);
 		resp.getWriter().write(json);
-				
 	}
 
 }

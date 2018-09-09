@@ -37,6 +37,9 @@ public class CrDAOimpl implements CrDAO {
 		case "a7":
 			tableCr = "a7cr";
 			break;
+		case "b9":
+			tableCr = "b9cr";
+			break;
 		default:
 			break;
 		}
@@ -110,8 +113,17 @@ public class CrDAOimpl implements CrDAO {
 
 	@Override
 	public boolean update(Cr cr) throws SQLException {
-		// TODO Auto-generated method stub
-		return false;
+		try{
+		      String sql = "update " + tableCr + " set name=?,phone=? where phone=?";
+		      pst = conn.prepareStatement(sql);
+		      pst.setString(1, cr.getButName());
+		      pst.setString(2, cr.getButPhone());
+		      pst.setString(3, cr.getPhone());
+		      pst.executeUpdate();
+		      return true;
+		    }catch(Exception e){
+		      return false;
+		    }
 	}
 
 
