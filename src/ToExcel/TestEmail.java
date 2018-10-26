@@ -107,7 +107,7 @@ public class TestEmail implements Job {
 
 	@Override
 	public void execute(JobExecutionContext context) throws JobExecutionException {
-		System.out.println("-----do quartz execute-----");
+		System.out.println("-----TestEmail quartz execute-----");
 		// 设置属性
 		Properties props = new Properties();
 		// QQ邮箱发件的服务器和端口
@@ -120,13 +120,13 @@ public class TestEmail implements Job {
 		// 接收值
 		JobDataMap dataMap = context.getJobDetail().getJobDataMap();
 		String teamXls = dataMap.getString("teamXls");
-		String KevinEmail = dataMap.getString("KevinEmail");
 		String oyqEmail = dataMap.getString("oyqEmail");
 		String ctEmail = dataMap.getString("ctEmail");
+		String zqfEmail = dataMap.getString("zqfEmail");
 		String teamEmail = dataMap.getString("teamEmail");
 		System.out.println("recived team:" + teamXls);
 		System.out.println(
-				"recived Email:" + KevinEmail + "," + oyqEmail + "," + ctEmail + "," + teamEmail);
+				"recived Email:" + oyqEmail + "," + ctEmail + "," + zqfEmail + "," + teamEmail);
 
 		Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
@@ -141,8 +141,9 @@ public class TestEmail implements Job {
 		{
 			try {
 				// 设置发件人，收件人，主题和文本内容，并发送
-//				message.setFrom(new InternetAddress(senderEmail, senderName, "UTF-8"));
-//				message.setSubject("今日橙人交单汇总表", "UTF-8");
+				message.setFrom(new InternetAddress(senderEmail, senderName, "UTF-8"));
+				message.setSubject("今日橙人交单汇总表", "UTF-8");
+				
 //				message.setRecipient(MimeMessage.RecipientType.TO, new InternetAddress(KevinEmail, "summary", "UTF-8"));// setRecipient写最前
 //				System.out.println("Preparing sending mail  1...");
 //				// 一个Multipart对象包含一个或多个bodypart对象，组成邮件正文
@@ -212,22 +213,43 @@ public class TestEmail implements Job {
 				transport.connect(fwq, senderEmail, sqm);
 				transport.sendMessage(message, message.getAllRecipients());
 				
+				message.setRecipient(MimeMessage.RecipientType.TO, new InternetAddress(zqfEmail, "summary", "UTF-8"));
+				System.out.println("Preparing sending mail  4...");
+				// 一个Multipart对象包含一个或多个bodypart对象，组成邮件正文
+				MimeMultipart multipart4 = new MimeMultipart();
+				// 创建附件节点 读取本地文件,并读取附件名称
+				String FilePath4 = path + "userB9" + ".xls";
+				MimeBodyPart file4 = new MimeBodyPart();
+				DataHandler dataHandler4 = new DataHandler(new FileDataSource(FilePath4));
+				file4.setDataHandler(dataHandler4);
+				file4.setFileName(MimeUtility.encodeText(dataHandler4.getName()));
+				// 将文本和文件添加到multipart
+				multipart4.addBodyPart(text);
+				multipart4.addBodyPart(file4);
+				multipart4.setSubType("mixed");// 混合关系
+				message.setContent(multipart4);
+				message.setSentDate(new Date());
+				message.saveChanges();
+				transport = session.getTransport("smtp");
+				transport.connect(fwq, senderEmail, sqm);
+				transport.sendMessage(message, message.getAllRecipients());
+				
 				if(teamEmail != null) {
 					message.setRecipient(MimeMessage.RecipientType.TO, new InternetAddress(teamEmail, "summary", "UTF-8"));
-					System.out.println("Preparing sending mail  3...");
+					System.out.println("Preparing sending mail to..."+teamXls);
 					// 一个Multipart对象包含一个或多个bodypart对象，组成邮件正文
-					MimeMultipart multipart4 = new MimeMultipart();
+					MimeMultipart multipart0 = new MimeMultipart();
 					// 创建附件节点 读取本地文件,并读取附件名称
-					String FilePath4 = path + teamXls + ".xls";
-					MimeBodyPart file4 = new MimeBodyPart();
-					DataHandler dataHandler4 = new DataHandler(new FileDataSource(FilePath4));
-					file4.setDataHandler(dataHandler4);
-					file4.setFileName(MimeUtility.encodeText(dataHandler4.getName()));
+					String FilePath0 = path + teamXls + ".xls";
+					MimeBodyPart file0 = new MimeBodyPart();
+					DataHandler dataHandler0 = new DataHandler(new FileDataSource(FilePath0));
+					file0.setDataHandler(dataHandler0);
+					file0.setFileName(MimeUtility.encodeText(dataHandler0.getName()));
 					// 将文本和文件添加到multipart
-					multipart4.addBodyPart(text);
-					multipart4.addBodyPart(file4);
-					multipart4.setSubType("mixed");// 混合关系
-					message.setContent(multipart4);
+					multipart0.addBodyPart(text);
+					multipart0.addBodyPart(file0);
+					multipart0.setSubType("mixed");// 混合关系
+					message.setContent(multipart0);
 					message.setSentDate(new Date());
 					message.saveChanges();
 					transport = session.getTransport("smtp");

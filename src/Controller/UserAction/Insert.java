@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -59,8 +61,8 @@ public class Insert extends HttpServlet {
 	String teamAdmin = null; //设置管理员队伍变量
 	String KevinEmail = "1215894562@qq.com";// 设置始终接收者接收所有队Email
 	String oyqEmail = "1404055432@qq.com";
-	String yjEmail = "787766819@qq.com";
 	String ctEmail = "S_love_en@163.com";
+	String zqfEmail = "1967422157@qq.com";
 
 	// 定义业务item文字
 	String item0 = "——预约办卡——";
@@ -76,6 +78,7 @@ public class Insert extends HttpServlet {
 	String item10 = "校园3000分钟免费V网";
 	String item11 = "30元钻石会员权益包";
 	String item12 = "存送话费";
+	String item13 = "国内视频定向流量";
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doPost(request, response);
@@ -83,6 +86,10 @@ public class Insert extends HttpServlet {
 
 	//增，删，改 数据建议用Post(安全性高，效率低)
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		SimpleDateFormat df = new SimpleDateFormat("HH");//设置日期格式
+		int dateHour = Integer.parseInt(df.format(new Date()));
+//		System.out.println(df.format(new Date()));// new Date()为获取当前系统时间
+		System.out.println("Now Hour:"+dateHour);
 		//设置编码格式，防止中文乱码
 		request.setCharacterEncoding("utf-8");
 		response.setContentType("text/html;charset=utf-8");
@@ -95,6 +102,8 @@ public class Insert extends HttpServlet {
 		String imgPhone = request.getParameter("imgPhone");
 		String item = request.getParameter("item");
 		System.out.println("item:"+item);
+		String itemll = request.getParameter("itemll");
+		System.out.println("itemll:"+itemll);
 		String room = request.getParameter("room");
 		String addTxt = request.getParameter("addTxt");
 		String myPhone = request.getParameter("myPhone");
@@ -281,6 +290,18 @@ public class Insert extends HttpServlet {
 			user13.setTeam(teamText);
 			userSD.insert(user13);
 		}
+		if (item.contains("13")) {
+			User user14 = new User();
+			user14.setItem(item13);
+			user14.setTeam(teamText);
+			userSD.insert(user14);
+		}
+		if(!(itemll == null || itemll.equals("null"))) {
+			User user15 = new User();
+			user15.setItem(itemll);
+			user15.setTeam(teamText);
+			userSD.insert(user15);
+		}
 		//插入一条空数据隔开显示
 		User userlast = new User();
 		userlast.setItem("  ");
@@ -312,21 +333,27 @@ public class Insert extends HttpServlet {
 			System.out.println("初值n:" + n);
 			try {
 				System.out.println("判断时n:" + n);
-				if (n % 5 == 0) {
-//					te.sendMail3(KevinEmail, teamXls);
-//					System.out.println("发送邮件给Kevin成功");
-					te.sendMail3(oyqEmail, teamXls);
-					System.out.println("发送邮件给oyq成功");
-					te.sendMail3(ctEmail, teamXls);
-					System.out.println("发送邮件给ct成功");
-					te.sendMail3(teamEmail, teamXls);
-					System.out.println("发送邮件给队伍" + team + "成功" + teamEmail);
+				//在22点之前可以发邮件
+				if((dateHour > 6) && (dateHour < 22)) {
+					if (n % 3 == 0) {
+//						te.sendMail3(KevinEmail, teamXls);
+//						System.out.println("发送邮件给Kevin成功");
+						te.sendMail3(oyqEmail, teamXls);
+						System.out.println("发送邮件给oyq成功");
+						te.sendMail3(ctEmail, teamXls);
+						System.out.println("发送邮件给ct成功");
+						te.sendMail3(teamEmail, teamXls);
+						System.out.println("发送邮件给队伍" + team + "成功" + teamEmail);
 
-					n = n + 1;
-					System.out.println("发送了邮件终值n:" + n);
-				} else {
-					n = n + 1;
-					System.out.println("不发送邮件终值n:" + n);
+						n = n + 1;
+						System.out.println("发送了邮件终值n:" + n);
+					} else {
+						n = n + 1;
+						System.out.println("不发送邮件终值n:" + n);
+						return;
+					}
+				}else {
+					System.out.println("time out");
 					return;
 				}
 				
@@ -336,9 +363,9 @@ public class Insert extends HttpServlet {
 		        .withIdentity("dummyJobName", "group1").build();
 		        //传值
 		        job.getJobDataMap().put("teamXls", teamXls);
-		        job.getJobDataMap().put("KevinEmail", KevinEmail);
 		        job.getJobDataMap().put("oyqEmail", oyqEmail);
 		        job.getJobDataMap().put("ctEmail", ctEmail);
+		        job.getJobDataMap().put("zqfEmail", zqfEmail);
 		        job.getJobDataMap().put("teamEmail", teamEmail);
 		        
 //		        //为了立即测试，可以使用下面的代码，每隔5秒钟执行一次
@@ -362,8 +389,8 @@ public class Insert extends HttpServlet {
 		         Scheduler scheduler = new StdSchedulerFactory().getScheduler();
 		         scheduler.start();
 		         //将触发器与工作关联起来
-		         scheduler.scheduleJob(job, trigger);  
-
+		         scheduler.scheduleJob(job, trigger); 
+				
 				if (conn != null) {
 					try {// 关闭连接
 						conn.close();

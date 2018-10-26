@@ -30,7 +30,7 @@ public class ControlVer extends HttpServlet{
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		Map<String,String> map=new HashMap<String,String>();
-		map.put("ver", "3");
+		map.put("ver", "5");
 		Gson gson = new Gson();
 		String json = gson.toJson(map);
 		logger.debug(json);
