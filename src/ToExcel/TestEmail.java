@@ -30,7 +30,7 @@ public class TestEmail implements Job {
 	public final String senderEmail = "1215894562@qq.com";
 	public final String senderName = "Kevin";
 	public final String fwq = "smtp.qq.com";
-	public final String sqm = "qouebuengldujagi";// 授权码，在自己的QQ邮箱中设置
+	public final String sqm = "tfllegwirpdigaed";// 授权码，在自己的QQ邮箱中设置
 	public final String smtpPort = "465";
 
 	public void sendMail3(String reciverEmail, String team) throws Exception {

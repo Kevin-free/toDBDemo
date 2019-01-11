@@ -59,10 +59,10 @@ public class Insert extends HttpServlet {
 	String teamText = null; //设置写入的队伍文本
 	String teamEmail = null; // 设置变量发送给哪个队伍
 	String teamAdmin = null; //设置管理员队伍变量
-	String KevinEmail = "1215894562@qq.com";// 设置始终接收者接收所有队Email
-	String oyqEmail = "1404055432@qq.com";
+	String KevinEmail = "1215894562@qq.com";//↓↓↓↓设置始终接收者接收所有队Email
+	String oyqEmail = "1404055432@qq.com"; 
 	String ctEmail = "S_love_en@163.com";
-	String zqfEmail = "1967422157@qq.com";
+	String zqfEmail = "1967422157@qq.com";// ↑↑↑↑设置始终接收者接收所有队Email
 
 	// 定义业务item文字
 	String item0 = "——预约办卡——";
@@ -165,7 +165,9 @@ public class Insert extends HttpServlet {
 			ResultSet rs = pst.executeQuery();
 			if (rs.next()) { 
 				for (int i = 0; i <= rs.getRow(); i++) {
-					if(rs.getString("email") != null) {						
+//					System.out.println("----team email:" + rs.getString("email")+",isEmpty:"+rs.getString("email").isEmpty()
+//							+",equals:"+rs.getString("email").equals(""));
+					if((rs.getString("email") != null) && !(rs.getString("email").isEmpty())){
 						teamEmail = rs.getString("email");
 					}
 					rs.next();

@@ -43,8 +43,8 @@ public class AddCr extends HttpServlet{
 		System.out.println(cr.toString());
 		Boolean isAdd = false;
 		//is add
-		isAdd = crSD.insert(cr);
 		// 3、调用ServiceDAO中的添加业务
+		isAdd = crSD.insert(cr);
 		Map<String,String> map=new HashMap<String,String>();
 		if(isAdd) map.put("isAdd", "ok");
 		else map.put("isAdd", "err");
